@@ -65,3 +65,10 @@ def cal(fai1, fai2):
 
 for i in range (0,20):
      cal(fai1[i], fai2[i])
+
+
+
+
+
+
+
