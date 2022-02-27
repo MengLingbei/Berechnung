@@ -8,7 +8,8 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QDoubleValidator, QPixmap
 
 from UI.Ui_MainWindow import Ui_MainWindow
-
+from django.http import HttpResponse
+from xlwt import *
 import numpy as np
 import tkinter
 import tkinter.messagebox
@@ -93,7 +94,7 @@ class MainWindow(QMainWindow):
         F2_1_2 = g2_x - z21_x + z22_x*np.cos(fai2) + z22_y*np.sin(fai2)
         F2_2 = (m2*g*0.5*g3_x + Fl*g3_x) * np.cos(fai1-fai2)
 
-        F2 = round((np.sin(fai2 - np.arctan(F2_1_1 / F2_1_2)) * z22_x) / F2_2,4)
+        F2 = round(F2_2 /(np.sin(fai2 - np.arctan(F2_1_1 / F2_1_2)) * z22_x) ,4)
         self.UI.lineEdit_13.setText(str(F2))
 
         # L1 berechnen
