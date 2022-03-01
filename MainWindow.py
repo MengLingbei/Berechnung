@@ -29,22 +29,23 @@ class MainWindow(QMainWindow):
         self.UI.label_26.setPixmap(label)
 
         validator = QDoubleValidator()
-        self.UI.lineEdit.setValidator(validator)
-        self.UI.lineEdit_2.setValidator(validator)
+        self.UI.lineEdit.setText('3700')
+        self.UI.lineEdit_2.setText('1600')
         self.UI.lineEdit_3.setValidator(validator)
         self.UI.lineEdit_4.setValidator(validator)
-        self.UI.lineEdit_5.setValidator(validator)
-        self.UI.lineEdit_6.setValidator(validator)
-        self.UI.lineEdit_7.setValidator(validator)
-        self.UI.lineEdit_8.setValidator(validator)
-        self.UI.lineEdit_9.setValidator(validator)
-        self.UI.lineEdit_10.setValidator(validator)
-        self.UI.lineEdit_16.setValidator(validator)
-        self.UI.lineEdit_17.setValidator(validator)
-        self.UI.lineEdit_18.setValidator(validator)
-        self.UI.lineEdit_19.setValidator(validator)
-        self.UI.lineEdit_20.setValidator(validator)
-        self.UI.lineEdit_21.setValidator(validator)
+        self.UI.lineEdit_5.setText('65')
+        self.UI.lineEdit_6.setText('2588')
+        self.UI.lineEdit_7.setText('6037')
+        self.UI.lineEdit_8.setText('690')
+        self.UI.lineEdit_9.setText('8600')
+        self.UI.lineEdit_10.setText('5975')
+        self.UI.lineEdit_11.setText('25000')
+        self.UI.lineEdit_16.setText('-65')
+        self.UI.lineEdit_17.setText('-440')
+        self.UI.lineEdit_18.setText('-234')
+        self.UI.lineEdit_19.setText('-93')
+        self.UI.lineEdit_20.setText('0')
+        self.UI.lineEdit_21.setText('0')
 
     # “ausrechnen" klicken
     @pyqtSlot()
@@ -54,11 +55,8 @@ class MainWindow(QMainWindow):
         Fl = float(self.UI.lineEdit_11.text())
 
         fai1 = float(self.UI.lineEdit_3.text())
-        if fai1>90:
-            tkinter.messagebox.showinfo('Information', '∅1 ist falsch')
+
         fai2 = float(self.UI.lineEdit_4.text())
-        if fai2>160:
-            tkinter.messagebox.showinfo('Information', '∅2 ist falsch')
 
         z11_x = float(self.UI.lineEdit_5.text())
         z11_y = float(self.UI.lineEdit_16.text())
@@ -77,7 +75,8 @@ class MainWindow(QMainWindow):
 
         g3_x = float(self.UI.lineEdit_10.text())
         g3_y = float(self.UI.lineEdit_21.text())
-
+        #fai1 = math.radians(fai1)
+        #fai2 = math.radians(fai2)
         # F1 berechnen
         F1_1 = (m1*g*0.5*g2_x + (m2*g+Fl)*g2_x)*np.cos(fai1)
         F1_2 = (m2*g*0.5*g3_x + Fl*g3_x)*np.cos(fai1-fai2)
@@ -90,7 +89,7 @@ class MainWindow(QMainWindow):
         self.UI.lineEdit_12.setText(str(F1))
 
         # F2 berechnen
-        F2_1_1 = z22_x*np.sin(fai1)-z22_y*np.cos(fai2)+z21_y
+        F2_1_1 = z22_x*np.sin(fai2)-z22_y*np.cos(fai2)+z21_y
         F2_1_2 = g2_x - z21_x + z22_x*np.cos(fai2) + z22_y*np.sin(fai2)
         F2_2 = (m2*g*0.5*g3_x + Fl*g3_x) * np.cos(fai1-fai2)
 
