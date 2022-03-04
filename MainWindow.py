@@ -33,17 +33,17 @@ class MainWindow(QMainWindow):
         self.UI.lineEdit_2.setText('1600')
         self.UI.lineEdit_3.setValidator(validator)
         self.UI.lineEdit_4.setValidator(validator)
-        self.UI.lineEdit_5.setText('65')
-        self.UI.lineEdit_6.setText('2588')
-        self.UI.lineEdit_7.setText('6037')
-        self.UI.lineEdit_8.setText('690')
-        self.UI.lineEdit_9.setText('8600')
-        self.UI.lineEdit_10.setText('5975')
+        self.UI.lineEdit_5.setText('0.065')
+        self.UI.lineEdit_6.setText('2.588')
+        self.UI.lineEdit_7.setText('6.037')
+        self.UI.lineEdit_8.setText('0.690')
+        self.UI.lineEdit_9.setText('8.600')
+        self.UI.lineEdit_10.setText('5.975')
         self.UI.lineEdit_11.setText('25000')
-        self.UI.lineEdit_16.setText('-65')
-        self.UI.lineEdit_17.setText('-440')
-        self.UI.lineEdit_18.setText('-234')
-        self.UI.lineEdit_19.setText('-93')
+        self.UI.lineEdit_16.setText('-0.065')
+        self.UI.lineEdit_17.setText('-0.440')
+        self.UI.lineEdit_18.setText('-0.234')
+        self.UI.lineEdit_19.setText('-0.093')
         self.UI.lineEdit_20.setText('0')
         self.UI.lineEdit_21.setText('0')
 
@@ -75,39 +75,43 @@ class MainWindow(QMainWindow):
 
         g3_x = float(self.UI.lineEdit_10.text())
         g3_y = float(self.UI.lineEdit_21.text())
+        fai1 = fai1 / 180 * np.pi
+
+        fai2 = fai2 / 180 * np.pi
         #fai1 = math.radians(fai1)
         #fai2 = math.radians(fai2)
-        # F1 berechnen
-        F1_1 = (m1*g*0.5*g2_x + (m2*g+Fl)*g2_x)*np.cos(fai1)
-        F1_2 = (m2*g*0.5*g3_x + Fl*g3_x)*np.cos(fai1-fai2)
-        F1_3 = Fl*np.sin((np.arctan((z22_x*np.sin(fai1)-z22_y*np.cos(fai2)+z22_y) / (g2_x-z21_x+z22_x*np.cos(fai2)+z22_y*np.sin(fai2)))))*z21_x
 
-        F1_4 = z12_x*np.sin(fai1) + z12_y*np.cos(fai1) - z11_y
-        F1_5 = z12_x*np.cos(fai1) - z12_y*np.sin(fai1) + z11_y
-
-        F1 = round((F1_1 + F1_2 -F1_3) / (np.sin(np.arctan(F1_4/F1_5) - fai1) *z12_x),4)
-        self.UI.lineEdit_12.setText(str(F1))
 
         # F2 berechnen
-        F2_1_1 = z22_x*np.sin(fai2)-z22_y*np.cos(fai2)+z21_y
-        F2_1_2 = g2_x - z21_x + z22_x*np.cos(fai2) + z22_y*np.sin(fai2)
-        F2_2 = (m2*g*0.5*g3_x + Fl*g3_x) * np.cos(fai1-fai2)
+        F2_1_1 = z22_x * np.sin(fai2) - z22_y * np.cos(fai2) + z21_y
+        F2_1_2 = g2_x - z21_x + z22_x * np.cos(fai2) + z22_y * np.sin(fai2)
+        F2_2 = (m2 * g * 0.5 * g3_x + Fl * g3_x) * np.cos(fai1 - fai2)
 
-        F2 = round(F2_2 /(np.sin(fai2 - np.arctan(F2_1_1 / F2_1_2)) * z22_x) ,4)
+        F2 = round(F2_2 / (np.sin(fai2 - np.arctan(F2_1_1 / F2_1_2)) * z22_x), 4)
         self.UI.lineEdit_13.setText(str(F2))
 
-        # L1 berechnen
-        L1_1 = -z12_y - np.sqrt(z11_x**2 + z11_y**2)
-        L1_2_1 = z12_x*np.sin(fai1) + z12_y*np.cos(fai1) - z11_y
-        L1_2_2 = z12_x*np.cos(fai1) - z12_y*np.sin(fai1) + z11_y
+        # F1 berechnen
+        F1_1 = (m1 * g * 0.5 * g2_x + (m2 * g + Fl) * g2_x) * np.cos(fai1)
+        F1_2 = (m2 * g * 0.5 * g3_x + Fl * g3_x) * np.cos(fai1 - fai2)
+        F1_3 = F2 * np.sin((np.arctan((z22_x * np.sin(fai2) - z22_y * np.cos(fai2) + z21_y) / (g2_x - z21_x + z22_x * np.cos(fai2) + z22_y * np.sin(fai2))))) * z21_x
 
-        L1 = round(L1_1 / (np.sin(np.arctan(L1_2_1 / L1_2_2)-fai1)),4)
+        F1_4 = z12_x * np.sin(fai1) + z12_y * np.cos(fai1) - z11_y
+        F1_5 = z12_x * np.cos(fai1) - z12_y * np.sin(fai1) - z11_x
+
+        F1 = round((F1_1 + F1_2 ) / ((np.sin(20 / 180 * np.pi )) * z12_x), 4)
+
+        #fai1 - np.arctan(F1_4 / F1_5)
+        self.UI.lineEdit_12.setText(str(F1))
+        # L1 berechnen
+        L1_1 = (z12_x * np.sin(fai1) + z12_y * np.cos(fai1) - z11_y) ** 2
+        L1_2 = (z12_x * np.cos(fai1) - z12_y * np.sin(fai1) - z11_x) ** 2
+        L1 = round(np.sqrt(L1_1 + L1_2), 4)
         self.UI.lineEdit_14.setText(str(L1))
 
         # L2 berechnen
-        L2_1 = (z22_x*np.sin(fai1) - z22_y*np.cos(fai2) + z21_y) ** 2
-        L2_2 = (g2_x - z21_x + z22_x*np.cos(fai2)+ z22_y*np.sin(fai2)) ** 2
-        L2 = round(np.sqrt(L2_1 + L2_2),4)
+        L2_1 = (z22_x * np.sin(fai2) - z22_y * np.cos(fai2) + z21_y) ** 2
+        L2_2 = (g2_x - z21_x + z22_x * np.cos(fai2) + z22_y * np.sin(fai2)) ** 2
+        L2 = round(np.sqrt(L2_1 + L2_2), 4)
         self.UI.lineEdit_15.setText(str(L2))
 
 if __name__ == "__main__":
